@@ -1,97 +1,81 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 喝水闹钟
 
-# Getting Started
+一款帮助你定时喝水的 Android 应用，支持自定义时间段、锁屏语音提醒。
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 功能特性
 
-## Step 1: Start Metro
+- 自定义提醒间隔（1分钟起）
+- 支持多个提醒时间段（如 8:00-12:00、14:00-20:00）
+- 锁屏状态下语音提醒（TTS）
+- 前台服务保活，不被系统杀死
+- 设置本地持久化存储
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 环境要求
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- Node.js >= 22.11.0
+- JDK 17+
+- Android SDK
+- React Native 0.85
 
-```sh
-# Using npm
+## 安装依赖
+
+```bash
+npm install
+```
+
+## 运行项目
+
+```bash
+# 启动开发服务器
 npm start
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+# 编译并安装到手机（新终端执行）
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+## 打包 APK
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+```bash
+# 打包 Debug 版本
+npm run build:debug
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+# 打包 Release 版本
+npm run build:release
 ```
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
+打包完成后，APK 文件位于：
+```
+android/app/build/outputs/apk/release/app-release.apk
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## 项目结构
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```
+WaterReminder/
+├── src/
+│   ├── screens/
+│   │   └── HomeScreen.tsx      # 主界面
+│   └── NativeNotificationModule.ts  # TurboModule 接口
+├── android/
+│   └── app/src/main/java/com/waterreminder/
+│       ├── MainApplication.kt      # 应用入口
+│       ├── MainActivity.kt         # 主 Activity
+│       ├── NotificationModule.kt   # 原生通知模块
+│       ├── NotificationPackage.kt  # 原生模块注册
+│       ├── ReminderService.kt      # 前台提醒服务
+│       ├── ReminderActivity.kt     # 锁屏唤醒 Activity
+│       └── TtsSingleton.kt         # TTS 语音单例
+└── package.json
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 技术栈
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+- React Native 0.85
+- TypeScript
+- Android 原生 TTS
+- 前台服务 (Foreground Service)
+- AsyncStorage
 
-## Step 3: Modify your app
+## 许可证
 
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+MIT
