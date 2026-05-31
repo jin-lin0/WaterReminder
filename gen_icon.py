@@ -8,16 +8,15 @@ def gen_icon(size, output_path):
     s = size / 1024
     cx, cy = size // 2, size // 2
 
-    bg_r = int(480 * s)
+    bg_r = int(580 * s)
     for y_img in range(size):
         for x_img in range(size):
             d = math.sqrt((x_img - cx) ** 2 + (y_img - cy) ** 2)
-            if d <= bg_r:
-                t = d / bg_r
-                r = int(255)
-                g = int(245 - t * 30)
-                b = int(248 - t * 22)
-                img.putpixel((x_img, y_img), (r, g, b, 255))
+            t = min(d / bg_r, 1.0)
+            r = int(255)
+            g = int(245 - t * 30)
+            b = int(248 - t * 22)
+            img.putpixel((x_img, y_img), (r, g, b, 255))
 
     cup_body = [
         (int(300*s), int(300*s)),
