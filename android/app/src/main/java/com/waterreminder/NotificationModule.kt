@@ -21,7 +21,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
     companion object {
         private const val TAG = "NotificationModule"
         private const val CHANNEL_ID = "water_reminder_channel"
-        private const val CHANNEL_NAME = "喝水闹钟"
+        private const val CHANNEL_NAME = "兔兔喝水啦"
         private var notificationId = 1000
     }
 
@@ -102,7 +102,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
             val channel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "喝水闹钟通知"
+                description = "兔兔喝水啦通知"
                 enableVibration(true)
                 setSound(null, null)
                 setBypassDnd(true)
@@ -137,7 +137,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
 
         val notification = NotificationCompat.Builder(reactApplicationContext, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("\uD83D\uDCA7 喝水闹钟")
+            .setContentTitle("\uD83D\uDCA7 兔兔喝水啦")
             .setContentText("该喝水了！请喝一杯水保持健康。")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -158,7 +158,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
 
         val notification = NotificationCompat.Builder(reactApplicationContext, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("\uD83D\uDCA7 喝水闹钟")
+            .setContentTitle("\uD83D\uDCA7 兔兔喝水啦")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

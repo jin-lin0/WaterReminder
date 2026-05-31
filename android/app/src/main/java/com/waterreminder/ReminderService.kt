@@ -20,7 +20,7 @@ class ReminderService : Service() {
     companion object {
         private const val TAG = "ReminderService"
         private const val CHANNEL_ID = "water_reminder_service"
-        private const val CHANNEL_NAME = "喝水闹钟服务"
+        private const val CHANNEL_NAME = "兔兔喝水啦服务"
         private const val CHANNEL_ID_REMIND = "water_reminder_channel"
         private const val NOTIFICATION_ID = 8888
         private const val ACTION_START = "com.waterreminder.START_SERVICE"
@@ -178,7 +178,7 @@ class ReminderService : Service() {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     val channel = NotificationChannel(
-                        CHANNEL_ID_REMIND, "喝水闹钟", NotificationManager.IMPORTANCE_HIGH
+                        CHANNEL_ID_REMIND, "兔兔喝水啦", NotificationManager.IMPORTANCE_HIGH
                     ).apply {
                         description = "喝水提醒通知"
                         enableVibration(true)
@@ -191,7 +191,7 @@ class ReminderService : Service() {
 
                 val notification = Notification.Builder(context, CHANNEL_ID_REMIND)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
-                    .setContentTitle("\uD83D\uDCA7 喝水闹钟")
+                    .setContentTitle("\uD83D\uDCA7 兔兔喝水啦")
                     .setContentText("该喝水了！请喝一杯水保持健康。")
                     .setAutoCancel(true)
                     .build()
@@ -237,7 +237,7 @@ class ReminderService : Service() {
         createServiceNotificationChannel()
         return Notification.Builder(this, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("\uD83D\uDCA7 喝水闹钟")
+            .setContentTitle("\uD83D\uDCA7 兔兔喝水啦")
             .setContentText("每${intervalMinutes}分钟提醒喝水")
             .setOngoing(true)
             .build()
@@ -248,7 +248,7 @@ class ReminderService : Service() {
             val channel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "喝水闹钟服务"
+                description = "兔兔喝水啦服务"
                 setShowBadge(false)
             }
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

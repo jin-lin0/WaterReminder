@@ -240,7 +240,7 @@ const HomeScreen: React.FC = () => {
       contentContainerStyle={s.c}
     >
       <View style={s.h}>
-        <Text style={s.t}>💧 喝水闹钟</Text>
+        <Text style={s.t}>� 兔兔喝水啦</Text>
         <Text style={s.st}>保持健康，定时喝水</Text>
       </View>
 
