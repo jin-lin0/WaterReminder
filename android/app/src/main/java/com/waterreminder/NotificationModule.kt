@@ -3,8 +3,11 @@ package com.waterreminder
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.facebook.react.bridge.ReactApplicationContext
@@ -28,6 +31,15 @@ class NotificationModule(reactContext: ReactApplicationContext) :
     fun scheduleReminder(intervalMinutes: Int, timeRangesJson: String, promise: Promise) {
         try {
             Log.e(TAG, "scheduleReminder: ${intervalMinutes}min, ranges=$timeRangesJson")
+
+            val prefs = reactApplicationContext.getSharedPreferences("water_reminder", Context.MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean("enabled", true)
+                .putInt("interval", intervalMinutes)
+                .putString("timeRanges", timeRangesJson)
+                .apply()
+
+            requestIgnoreBatteryOptimizations()
             ReminderService.start(reactApplicationContext, intervalMinutes, timeRangesJson)
             promise.resolve(true)
         } catch (e: Exception) {
@@ -36,10 +48,32 @@ class NotificationModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    private fun requestIgnoreBatteryOptimizations() {
+        try {
+            val pm = reactApplicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (!pm.isIgnoringBatteryOptimizations(reactApplicationContext.packageName)) {
+                Log.e(TAG, "Requesting battery optimization exemption")
+                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                    data = Uri.parse("package:${reactApplicationContext.packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                reactApplicationContext.startActivity(intent)
+            } else {
+                Log.e(TAG, "Already exempt from battery optimization")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "requestIgnoreBatteryOptimizations error", e)
+        }
+    }
+
     @ReactMethod
     fun cancelReminder(promise: Promise) {
         try {
-            Log.d(TAG, "cancelReminder")
+            Log.e(TAG, "cancelReminder")
+
+            val prefs = reactApplicationContext.getSharedPreferences("water_reminder", Context.MODE_PRIVATE)
+            prefs.edit().putBoolean("enabled", false).apply()
+
             ReminderService.stop(reactApplicationContext)
             TtsSingleton.stop()
             promise.resolve(true)
@@ -68,7 +102,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
             val channel = NotificationChannel(
                 CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "喝水提醒通知"
+                description = "喝水闹钟通知"
                 enableVibration(true)
                 setSound(null, null)
                 setBypassDnd(true)
@@ -103,7 +137,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
 
         val notification = NotificationCompat.Builder(reactApplicationContext, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("💧 喝水闹钟")
+            .setContentTitle("\uD83D\uDCA7 喝水闹钟")
             .setContentText("该喝水了！请喝一杯水保持健康。")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -124,7 +158,7 @@ class NotificationModule(reactContext: ReactApplicationContext) :
 
         val notification = NotificationCompat.Builder(reactApplicationContext, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(title)
+            .setContentTitle("\uD83D\uDCA7 喝水闹钟")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
